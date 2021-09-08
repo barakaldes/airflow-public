@@ -4,11 +4,13 @@ import json
 
 from datetime import datetime
 
-default_args = {
-    'start_date': datetime(2020, 1, 1),
-    'owner': 'Airflow',
-    'email': 'owner@test.com'
-}
+#######################################################################################
+# PARAMETROS
+#######################################################################################
+nameDAG = 'mapfre-from-oracle-to-azure-gen-2'
+owner = 'mapfre'
+email = ['miguel.peteiro@evolutio.com']
+#######################################################################################
 
 def create_dag(dag_id,
                schedule,
