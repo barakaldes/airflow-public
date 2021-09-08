@@ -1,5 +1,0 @@
-{
-    "DagId": "spain",
-    "Schedule": "*/20 * * * * ",
-    "Query":"'SELECT * FROM table1;'"
-}
