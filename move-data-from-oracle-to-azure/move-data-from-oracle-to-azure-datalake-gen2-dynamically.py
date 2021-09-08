@@ -1,14 +1,9 @@
-import csv
 import json
 import os
 from datetime import timedelta
-from airflow.models import Connection
-from airflow import DAG, settings
+from airflow import DAG
 from airflow.operators.dummy import DummyOperator
 from datetime import datetime
-from airflow.models import Variable
-from airflow.operators.email import EmailOperator
-from OracleToAzureDataLakeOGen2perator import OracleToAzureDataLakeGen2Operator
 
 #######################################################################################
 # PARAMETROS
