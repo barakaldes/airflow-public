@@ -4,7 +4,7 @@ from datetime import timedelta
 from airflow import DAG
 from airflow.operators.dummy import DummyOperator
 from datetime import datetime
-from repo.custom_operator.OracleToAzureDataLakeOGen2perator import OracleToAzureDataLakeGen2Operator
+from OracleToAzureDataLakeOGen2perator import OracleToAzureDataLakeGen2Operator
 
 #######################################################################################
 # PARAMETROS
@@ -29,7 +29,6 @@ html_email_content = """
 ¡SALUDOS!
 """
 
-
 def create_dag(dag_id,
                schedule,
                query,
@@ -41,7 +40,7 @@ def create_dag(dag_id,
     with dag:
         t_begin = DummyOperator(task_id="begin")
         t_end = DummyOperator(task_id="end")
-
+        OracleToAzureDataLakeGen2Operator
         # t_send_email_OK = EmailOperator(
         #     task_id='send_email_ok',
         #     to=email,
