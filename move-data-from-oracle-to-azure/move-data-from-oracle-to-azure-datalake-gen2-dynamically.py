@@ -4,7 +4,8 @@ from datetime import timedelta
 from airflow import DAG
 from airflow.operators.dummy import DummyOperator
 from datetime import datetime
-from dags.OracleToAzureDataLakeOGen2perator import OracleToAzureDataLakeGen2Operator
+from airflow.operators.email import EmailOperator
+from dags.repo.OracleToAzureDataLakeOGen2perator import OracleToAzureDataLakeGen2Operator
 
 #######################################################################################
 # PARAMETROS
