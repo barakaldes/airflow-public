@@ -27,7 +27,7 @@ def create_dag(dag_id,
     return dag
 
 
-config_filepath = 'dags_git_public/dag-config/'
+config_filepath = 'dags/dag-config/'
         
 for filename in os.listdir(config_filepath):
     f = open(config_filepath + filename)
