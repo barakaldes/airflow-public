@@ -27,7 +27,7 @@ def create_dag(dag_id,
     return dag
 
 
-config_filepath = 'dag-config/'
+config_filepath = '/opt/airflow/dags/dag-config/'
         
 for filename in os.listdir(config_filepath):
     f = open(config_filepath + filename)
