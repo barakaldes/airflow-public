@@ -4,6 +4,8 @@ from datetime import timedelta
 from airflow import DAG
 from airflow.operators.dummy import DummyOperator
 from datetime import datetime
+from airflow.models import Variable
+from airflow.operators.email import EmailOperator
 from OracleToAzureDataLakeOGen2perator import OracleToAzureDataLakeGen2Operator
 
 #######################################################################################
@@ -40,32 +42,32 @@ def create_dag(dag_id,
     with dag:
         t_begin = DummyOperator(task_id="begin")
         t_end = DummyOperator(task_id="end")
-        OracleToAzureDataLakeGen2Operator
-        # t_send_email_OK = EmailOperator(
-        #     task_id='send_email_ok',
-        #     to=email,
-        #     params={'name_dag': nameDAG},
-        #     subject=f'Tarea {nameDAG} ejecutada con éxito',
-        #     html_content=html_email_content
-        # )
-        #
-        # t_move_data_from_oracle_to_azure_datalake = OracleToAzureDataLakeGen2Operator(
-        #     task_id="move_data",
-        #     azure_data_lake_conn_id="evolutio-from-oracle-to-azure-datalake__datalake_gen2",
-        #     azure_data_lake_container=Variable.get("evolutio-from-oracle-to-azure-datalake__azure-data-lake-container"),
-        #     oracle_conn_id="evolutio-from-oracle-to-azure-datalake__oracle",
-        #     filename=Variable.get("evolutio-from-oracle-to-azure-datalake__filename"),
-        #     azure_data_lake_path=Variable.get("evolutio-from-oracle-to-azure-datalake__azure-data-lake-path"),
-        #     sql=query,
-        #     sql_params=None,
-        #     delimiter=";",
-        #     encoding="utf-8",
-        #     quotechar='"',
-        #     quoting=csv.QUOTE_MINIMAL
-        # )
 
-        # t_begin >> t_move_data_from_oracle_to_azure_datalake >> t_send_email_OK >> t_end
-        t_begin >> t_end
+        t_send_email_OK = EmailOperator(
+            task_id='send_email_ok',
+            to=email,
+            params={'name_dag': nameDAG},
+            subject=f'Tarea {nameDAG} ejecutada con éxito',
+            html_content=html_email_content
+        )
+
+        t_move_data_from_oracle_to_azure_datalake = OracleToAzureDataLakeGen2Operator(
+            task_id="move_data",
+            azure_data_lake_conn_id="evolutio-from-oracle-to-azure-datalake__datalake_gen2",
+            azure_data_lake_container=Variable.get("evolutio-from-oracle-to-azure-datalake__azure-data-lake-container"),
+            oracle_conn_id="evolutio-from-oracle-to-azure-datalake__oracle",
+            filename=Variable.get("evolutio-from-oracle-to-azure-datalake__filename"),
+            azure_data_lake_path=Variable.get("evolutio-from-oracle-to-azure-datalake__azure-data-lake-path"),
+            sql=query,
+            sql_params=None,
+            delimiter=";",
+            encoding="utf-8",
+            quotechar='"',
+            quoting=csv.QUOTE_MINIMAL
+        )
+
+        t_begin >> t_move_data_from_oracle_to_azure_datalake >> t_send_email_OK >> t_end
+        #t_begin >> t_end
 
     return dag
 
