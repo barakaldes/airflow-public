@@ -4,8 +4,7 @@ from datetime import timedelta
 from airflow import DAG
 from airflow.operators.dummy import DummyOperator
 from datetime import datetime
-from airflow.operators.email import EmailOperator
-from OracleToAzureDataLakeOGen2perator import OracleToAzureDataLakeGen2Operator
+from custom_operator.OracleToAzureDataLakeOGen2perator import OracleToAzureDataLakeGen2Operator
 
 #######################################################################################
 # PARAMETROS
@@ -14,7 +13,6 @@ nameDAG = 'mapfre-from-oracle-to-azure-gen-2'
 owner = 'mapfre'
 email = ['miguel.peteiro@evolutio.com']
 #######################################################################################
-
 html_email_content = """
 <hr />
 <p>¡Felicidades! el DAG: <strong>{{ params.name_dag }}</strong> se ha ejecutado correctamente</p>
