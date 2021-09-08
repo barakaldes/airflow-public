@@ -8,7 +8,7 @@ from airflow.operators.dummy import DummyOperator
 from datetime import datetime
 from airflow.models import Variable
 from airflow.operators.email import EmailOperator
-# from OracleToAzureDataLakeOGen2perator import OracleToAzureDataLakeGen2Operator
+from OracleToAzureDataLakeOGen2perator import OracleToAzureDataLakeGen2Operator
 
 #######################################################################################
 # PARAMETROS
