@@ -1,0 +1,5 @@
+{
+    "DagId": "afganistan",
+    "Schedule": "*/20 * * * * ",
+    "Query":"SELECT * FROM table1;"
+}
