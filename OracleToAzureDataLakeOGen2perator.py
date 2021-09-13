@@ -106,6 +106,10 @@ class OracleToAzureDataLakeGen2Operator(BaseOperator):
 
         self.log.info("Dumping Oracle query results to local file")
 
+
+
+
+
         from airflow.models.connection import Connection
         conn = Connection.get_connection_from_secrets("ORACLE-TO-AZURE-DATALAKE__ORACLE_CONNECTION")
 
@@ -163,11 +167,17 @@ class OracleToAzureDataLakeGen2Operator(BaseOperator):
 
         conn = cx_Oracle.connect(**conn_config)
 
+        if mod is not None:
+            conn.module = mod
 
-        # connection = cx_Oracle.connect(user="ADMIN", password="aBc123-:,XyZ", dsn="test002db_high")
 
-        conn2 = oracle_hook.get_conn()
 
+
+
+
+        #connection = cx_Oracle.connect(user="ADMIN", password="aBc123-:,XyZ", dsn="test002db_high")
+
+        # conn = oracle_hook.get_conn()
         # cursor = conn.cursor()  # type: ignore[attr-defined]
         # cursor.execute(self.sql, self.sql_params)
         #
