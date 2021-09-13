@@ -11,6 +11,8 @@ from airflow.providers.microsoft.azure.hooks.wasb import WasbHook
 from airflow.providers.oracle.hooks.oracle import OracleHook
 from airflow.utils.decorators import apply_defaults
 
+from pete_oracle import PeteOracleHook
+
 
 class OracleToAzureDataLakeGen2Operator(BaseOperator):
     """
@@ -94,8 +96,9 @@ class OracleToAzureDataLakeGen2Operator(BaseOperator):
 
         # cx_Oracle.init_oracle_client(lib_dir=r"/opt/oracle/instantclient_21_1")
 
-        oracle_hook = OracleHook(oracle_conn_id=self.oracle_conn_id)
-        azure_data_lake_hook = WasbHook(wasb_conn_id=self.azure_data_lake_conn_id)
+        #oracle_hook = OracleHook(oracle_conn_id=self.oracle_conn_id)
+        oracle_hook = PeteOracleHook(oracle_conn_id=self.oracle_conn_id)
+        # azure_data_lake_hook = WasbHook(wasb_conn_id=self.azure_data_lake_conn_id)
 
         execution_date = datetime.strptime(context.get("ds"), '%Y-%m-%d')
         execution_date_with_spanish_format = execution_date.strftime("%d/%m/%Y")
