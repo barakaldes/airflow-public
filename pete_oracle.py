@@ -55,7 +55,7 @@ class PeteOracleHook(DbApiHook):
         `cx_Oracle.connect <https://cx-oracle.readthedocs.io/en/latest/module.html#cx_Oracle.connect>`_
         """
 
-        conn = cx_Oracle.connect(user="ADMIN", password="aBc123-:,XyZ", dsn="test002db_high")
+        conn = cx_Oracle.connect(user="ADMIN2", password="aBc123-:,XyZ", dsn="test002db_high")
 
         return conn
 
