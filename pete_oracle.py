@@ -54,10 +54,10 @@ class PeteOracleHook(DbApiHook):
         see more param detail in
         `cx_Oracle.connect <https://cx-oracle.readthedocs.io/en/latest/module.html#cx_Oracle.connect>`_
         """
-        conn = self.get_connection(
-            self.oracle_conn_id  # type: ignore[attr-defined]  # pylint: disable=no-member
-        )
-        conn_config = {'user': "ADMIN", 'password': "aBc123-:,XyZ"}
+        # conn = self.get_connection(
+        #     self.oracle_conn_id  # type: ignore[attr-defined]  # pylint: disable=no-member
+        # )
+        # conn_config = {'user': "ADMIN", 'password': "aBc123-:,XyZ"}
         # dsn = conn.extra_dejson.get('dsn')
         # sid = conn.extra_dejson.get('sid')
         # mod = conn.extra_dejson.get('module')
@@ -69,7 +69,7 @@ class PeteOracleHook(DbApiHook):
         # elif dsn and service_name and not sid:
         #     conn_config['dsn'] = cx_Oracle.makedsn(dsn, port, service_name=service_name)
         # else:
-        conn_config['dsn'] = conn.host
+        conn_config['dsn'] = "test002db_high"
         #
         # if 'encoding' in conn.extra_dejson:
         #     conn_config['encoding'] = conn.extra_dejson.get('encoding')
@@ -109,9 +109,11 @@ class PeteOracleHook(DbApiHook):
         # elif purity == 'default':
         #     conn_config['purity'] = cx_Oracle.ATTR_PURITY_DEFAULT
         #
-        conn = cx_Oracle.connect(**conn_config)
+        # conn = cx_Oracle.connect(**conn_config)
         # if mod is not None:
         #     conn.module = mod
+
+        conn = cx_Oracle.connect(user="ADMIN", password="aBc123-:,XyZ", dsn="test002db_high")
 
         return conn
 
