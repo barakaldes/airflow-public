@@ -67,14 +67,16 @@ class PeteOracleHook(DbApiHook):
         sid = conn.extra_dejson.get('sid')
         mod = conn.extra_dejson.get('module')
 
-        service_name = conn.extra_dejson.get('service_name')
-        port = conn.port if conn.port else 1521
-        if dsn and sid and not service_name:
-            conn_config['dsn'] = cx_Oracle.makedsn(dsn, port, sid)
-        elif dsn and service_name and not sid:
-            conn_config['dsn'] = cx_Oracle.makedsn(dsn, port, service_name=service_name)
-        else:
-            conn_config['dsn'] = conn.host
+        # service_name = conn.extra_dejson.get('service_name')
+        # port = conn.port if conn.port else 1521
+        # if dsn and sid and not service_name:
+        #     conn_config['dsn'] = cx_Oracle.makedsn(dsn, port, sid)
+        # elif dsn and service_name and not sid:
+        #     conn_config['dsn'] = cx_Oracle.makedsn(dsn, port, service_name=service_name)
+        # else:
+        #     conn_config['dsn'] = conn.host
+
+        conn_config['dsn'] = conn.host
 
         # if 'encoding' in conn.extra_dejson:
         #     conn_config['encoding'] = conn.extra_dejson.get('encoding')
