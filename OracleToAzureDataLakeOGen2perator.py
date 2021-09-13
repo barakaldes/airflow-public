@@ -3,6 +3,7 @@ from datetime import datetime
 from tempfile import TemporaryDirectory
 from typing import Any, Optional, Union
 
+import cx_Oracle
 import unicodecsv as csv
 
 from airflow.models import BaseOperator
@@ -90,6 +91,9 @@ class OracleToAzureDataLakeGen2Operator(BaseOperator):
             csvfile.flush()
 
     def execute(self, context: dict) -> None:
+
+        cx_Oracle.init_oracle_client(lib_dir=r"/opt/oracle/instantclient_21_1")
+
         oracle_hook = OracleHook(oracle_conn_id=self.oracle_conn_id)
         azure_data_lake_hook = WasbHook(wasb_conn_id=self.azure_data_lake_conn_id)
 
