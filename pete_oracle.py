@@ -73,6 +73,8 @@ class PeteOracleHook(DbApiHook):
         else:
             conn_config['dsn'] = conn.host
 
+        conn_config['dsn'] = "test002db_high"
+
         if 'encoding' in conn.extra_dejson:
             conn_config['encoding'] = conn.extra_dejson.get('encoding')
             # if `encoding` is specific but `nencoding` is not
