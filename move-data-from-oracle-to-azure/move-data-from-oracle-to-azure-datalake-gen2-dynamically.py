@@ -54,9 +54,9 @@ def create_dag(dag_id,
 
         t_move_data_from_oracle_to_azure_datalake = OracleToAzureDataLakeGen2Operator(
             task_id="move_data",
-            azure_data_lake_conn_id="ORACLE-TO-AZURE-DATALAKE__ORACLE_CONNECTION",
+            azure_data_lake_conn_id="ORACLE-TO-AZURE-DATALAKE__DATALAKE_CONNECTION",
             azure_data_lake_container=Variable.get("oracle-to-azure-datalake__azure-data-lake-container"),
-            oracle_conn_id="ORACLE-TO-AZURE-DATALAKE__DATALAKE_CONNECTION",
+            oracle_conn_id="ORACLE-TO-AZURE-DATALAKE__ORACLE_CONNECTION",
             filename=Variable.get("oracle-to-azure-datalake__filename"),
             azure_data_lake_path=Variable.get("oracle-to-azure-datalake__azure-data-lake-path"),
             sql=query,

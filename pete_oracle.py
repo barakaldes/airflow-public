@@ -59,7 +59,7 @@ class PeteOracleHook(DbApiHook):
             self.oracle_conn_id  # type: ignore[attr-defined]  # pylint: disable=no-member
         )
 
-        conn_config = {'user': "ADMIN", 'password': "aBc123-:,XyZ"}
+        #conn_config = {'user': "ADMIN", 'password': "aBc123-:,XyZ"}
         dsn = conn.extra_dejson.get('dsn')
         sid = conn.extra_dejson.get('sid')
         mod = conn.extra_dejson.get('module')
@@ -73,7 +73,7 @@ class PeteOracleHook(DbApiHook):
         else:
             conn_config['dsn'] = conn.host
 
-        conn_config['dsn'] = "test002db_high"
+        #conn_config['dsn'] = "test002db_high"
 
         if 'encoding' in conn.extra_dejson:
             conn_config['encoding'] = conn.extra_dejson.get('encoding')
