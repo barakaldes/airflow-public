@@ -94,8 +94,7 @@ class OracleToAzureDataLakeGen2Operator(BaseOperator):
 
         # cx_Oracle.init_oracle_client(lib_dir=r"/opt/oracle/instantclient_21_1")
 
-        # oracle_hook = OracleHook(oracle_conn_id=self.oracle_conn_id)
-        oracle_hook = OracleHook(oracle_conn_id="ORACLE-TO-AZURE-DATALAKE__ORACLE_CONNECTION")
+        oracle_hook = OracleHook(oracle_conn_id=self.oracle_conn_id)
         azure_data_lake_hook = WasbHook(wasb_conn_id=self.azure_data_lake_conn_id)
 
         execution_date = datetime.strptime(context.get("ds"), '%Y-%m-%d')
@@ -178,7 +177,7 @@ class OracleToAzureDataLakeGen2Operator(BaseOperator):
 
         #connection = cx_Oracle.connect(user="ADMIN", password="aBc123-:,XyZ", dsn="test002db_high")
 
-        conn = oracle_hook.get_conn()
+        conn = self.get_conn()
         # cursor = conn.cursor()  # type: ignore[attr-defined]
         # cursor.execute(self.sql, self.sql_params)
         #
@@ -191,3 +190,94 @@ class OracleToAzureDataLakeGen2Operator(BaseOperator):
         #     )
         # cursor.close()
         # conn.close()  # type: ignore[attr-defined]
+
+
+    def get_conn(self) -> 'OracleHook':
+        """
+        Returns a oracle connection object
+        Optional parameters for using a custom DSN connection
+        (instead of using a server alias from tnsnames.ora)
+        The dsn (data source name) is the TNS entry
+        (from the Oracle names server or tnsnames.ora file)
+        or is a string like the one returned from makedsn().
+
+        :param dsn: the host address for the Oracle server
+        :param service_name: the db_unique_name of the database
+              that you are connecting to (CONNECT_DATA part of TNS)
+
+        You can set these parameters in the extra fields of your connection
+        as in ``{ "dsn":"some.host.address" , "service_name":"some.service.name" }``
+        see more param detail in
+        `cx_Oracle.connect <https://cx-oracle.readthedocs.io/en/latest/module.html#cx_Oracle.connect>`_
+        """
+        conn = self.get_connection(
+            "ORACLE-TO-AZURE-DATALAKE__ORACLE_CONNECTION"
+        )
+        conn_config = {'user': conn.login, 'password': conn.password}
+        dsn = conn.extra_dejson.get('dsn')
+        sid = conn.extra_dejson.get('sid')
+        mod = conn.extra_dejson.get('module')
+
+        service_name = conn.extra_dejson.get('service_name')
+        port = conn.port if conn.port else 1521
+        if dsn and sid and not service_name:
+            conn_config['dsn'] = cx_Oracle.makedsn(dsn, port, sid)
+        elif dsn and service_name and not sid:
+            conn_config['dsn'] = cx_Oracle.makedsn(dsn, port, service_name=service_name)
+        else:
+            conn_config['dsn'] = conn.host
+
+        if 'encoding' in conn.extra_dejson:
+            conn_config['encoding'] = conn.extra_dejson.get('encoding')
+            # if `encoding` is specific but `nencoding` is not
+            # `nencoding` should use same values as `encoding` to set encoding, inspired by
+            # https://github.com/oracle/python-cx_Oracle/issues/157#issuecomment-371877993
+            if 'nencoding' not in conn.extra_dejson:
+                conn_config['nencoding'] = conn.extra_dejson.get('encoding')
+        if 'nencoding' in conn.extra_dejson:
+            conn_config['nencoding'] = conn.extra_dejson.get('nencoding')
+        if 'threaded' in conn.extra_dejson:
+            conn_config['threaded'] = conn.extra_dejson.get('threaded')
+        if 'events' in conn.extra_dejson:
+            conn_config['events'] = conn.extra_dejson.get('events')
+
+        mode = conn.extra_dejson.get('mode', '').lower()
+        if mode == 'sysdba':
+            conn_config['mode'] = cx_Oracle.SYSDBA
+        elif mode == 'sysasm':
+            conn_config['mode'] = cx_Oracle.SYSASM
+        elif mode == 'sysoper':
+            conn_config['mode'] = cx_Oracle.SYSOPER
+        elif mode == 'sysbkp':
+            conn_config['mode'] = cx_Oracle.SYSBKP
+        elif mode == 'sysdgd':
+            conn_config['mode'] = cx_Oracle.SYSDGD
+        elif mode == 'syskmt':
+            conn_config['mode'] = cx_Oracle.SYSKMT
+        elif mode == 'sysrac':
+            conn_config['mode'] = cx_Oracle.SYSRAC
+
+        purity = conn.extra_dejson.get('purity', '').lower()
+        if purity == 'new':
+            conn_config['purity'] = cx_Oracle.ATTR_PURITY_NEW
+        elif purity == 'self':
+            conn_config['purity'] = cx_Oracle.ATTR_PURITY_SELF
+        elif purity == 'default':
+            conn_config['purity'] = cx_Oracle.ATTR_PURITY_DEFAULT
+
+        conn = cx_Oracle.connect(**conn_config)
+        if mod is not None:
+            conn.module = mod
+
+        return conn
+
+    def get_connection(cls, conn_id: str) -> "Connection":
+        """
+        Get connection, given connection id.
+
+        :param conn_id: connection id
+        :return: connection
+        """
+        from airflow.models.connection import Connection
+        conn = Connection.get_connection_from_secrets(conn_id)
+        return conn
