@@ -113,6 +113,7 @@ class PeteOracleHook(DbApiHook):
         # if mod is not None:
         #     conn.module = mod
 
+        cx_Oracle.init_oracle_client(lib_dir=r"/opt/oracle/instantclient_21_1")
         conn = cx_Oracle.connect(user="ADMIN", password="aBc123-:,XyZ", dsn="test002db_high")
 
         return conn
