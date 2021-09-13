@@ -166,7 +166,8 @@ class OracleToAzureDataLakeGen2Operator(BaseOperator):
 
         # connection = cx_Oracle.connect(user="ADMIN", password="aBc123-:,XyZ", dsn="test002db_high")
 
-        # conn = oracle_hook.get_conn()
+        conn2 = oracle_hook.get_conn()
+
         # cursor = conn.cursor()  # type: ignore[attr-defined]
         # cursor.execute(self.sql, self.sql_params)
         #
