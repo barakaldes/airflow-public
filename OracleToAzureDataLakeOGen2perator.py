@@ -107,7 +107,6 @@ class OracleToAzureDataLakeGen2Operator(BaseOperator):
 
         cursor = conn.cursor()  # type: ignore[attr-defined]
         cursor.execute(self.sql, self.sql_params)
-        # cursor.execute("select * from table1", self.sql_params)
 
         with TemporaryDirectory(prefix='airflow_oracle_to_azure_op_') as temp:
             self._write_temp_file(cursor, os.path.join(temp, self.filename))

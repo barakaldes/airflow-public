@@ -68,8 +68,8 @@ def create_dag(dag_id,
             quoting=csv.QUOTE_MINIMAL
         )
 
-        t_begin >> t_move_data_from_oracle_to_azure_datalake >> t_end
-        # t_begin >> t_move_data_from_oracle_to_azure_datalake >> t_send_email_OK >> t_end
+        # t_begin >> t_move_data_from_oracle_to_azure_datalake >> t_end
+        t_begin >> t_move_data_from_oracle_to_azure_datalake >> t_send_email_OK >> t_end
         # t_begin >> t_end
 
     return dag
