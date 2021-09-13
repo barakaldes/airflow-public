@@ -92,7 +92,7 @@ class OracleToAzureDataLakeGen2Operator(BaseOperator):
 
     def execute(self, context: dict) -> None:
 
-        cx_Oracle.init_oracle_client(lib_dir=r"/opt/oracle/instantclient_21_1")
+        # cx_Oracle.init_oracle_client(lib_dir=r"/opt/oracle/instantclient_21_1")
 
         oracle_hook = OracleHook(oracle_conn_id=self.oracle_conn_id)
         azure_data_lake_hook = WasbHook(wasb_conn_id=self.azure_data_lake_conn_id)
@@ -107,7 +107,7 @@ class OracleToAzureDataLakeGen2Operator(BaseOperator):
         self.log.info("Dumping Oracle query results to local file")
 
         connection = cx_Oracle.connect(user="ADMIN", password="aBc123-:,XyZ", dsn="test002db_high")
-        
+
         # conn = oracle_hook.get_conn()
         # cursor = conn.cursor()  # type: ignore[attr-defined]
         # cursor.execute(self.sql, self.sql_params)
