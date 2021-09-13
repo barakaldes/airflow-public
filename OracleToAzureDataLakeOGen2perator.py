@@ -93,7 +93,6 @@ class OracleToAzureDataLakeGen2Operator(BaseOperator):
             csvfile.flush()
 
     def execute(self, context: dict) -> None:
-
         oracle_hook = OracleHook(oracle_conn_id=self.oracle_conn_id)
         azure_data_lake_hook = WasbHook(wasb_conn_id=self.azure_data_lake_conn_id)
 
@@ -106,15 +105,15 @@ class OracleToAzureDataLakeGen2Operator(BaseOperator):
         self.log.info("Dumping Oracle query results to local file")
         conn = oracle_hook.get_conn()
 
-        # cursor = conn.cursor()  # type: ignore[attr-defined]
-        # cursor.execute(self.sql, self.sql_params)
-        #
-        # with TemporaryDirectory(prefix='airflow_oracle_to_azure_op_') as temp:
-        #     self._write_temp_file(cursor, os.path.join(temp, self.filename))
-        #     self.log.info("Uploading local file to Azure Data Lake")
-        #     final_path = self.azure_data_lake_path + "/" + execution_date_with_spanish_format.replace("/", "_") + "/" + self.filename
-        #     azure_data_lake_hook.load_file(
-        #         os.path.join(temp, self.filename), self.azure_data_lake_container, final_path, overwrite="true"
-        #     )
-        # cursor.close()
-        # conn.close()  # type: ignore[attr-defined]
+        cursor = conn.cursor()  # type: ignore[attr-defined]
+        cursor.execute(self.sql, self.sql_params)
+
+        with TemporaryDirectory(prefix='airflow_oracle_to_azure_op_') as temp:
+            self._write_temp_file(cursor, os.path.join(temp, self.filename))
+            self.log.info("Uploading local file to Azure Data Lake")
+            final_path = self.azure_data_lake_path + "/" + execution_date_with_spanish_format.replace("/", "_") + "/" + self.filename
+            azure_data_lake_hook.load_file(
+                os.path.join(temp, self.filename), self.azure_data_lake_container, final_path, overwrite="true"
+            )
+        cursor.close()
+        conn.close()  # type: ignore[attr-defined]
