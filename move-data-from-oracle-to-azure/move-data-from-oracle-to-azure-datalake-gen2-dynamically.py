@@ -32,6 +32,7 @@ html_email_content = """
 ¡SALUDOS!
 """
 
+
 def create_dag(dag_id,
                schedule,
                query,
@@ -68,7 +69,7 @@ def create_dag(dag_id,
         )
 
         t_begin >> t_move_data_from_oracle_to_azure_datalake >> t_end
-        #t_begin >> t_move_data_from_oracle_to_azure_datalake >> t_send_email_OK >> t_end
+        # t_begin >> t_move_data_from_oracle_to_azure_datalake >> t_send_email_OK >> t_end
         # t_begin >> t_end
 
     return dag
@@ -95,4 +96,3 @@ for filename in os.listdir(config_filepath):
                                             config['Schedule'],
                                             config['Query'],
                                             default_args)
-
