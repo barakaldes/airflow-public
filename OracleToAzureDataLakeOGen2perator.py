@@ -100,14 +100,14 @@ class OracleToAzureDataLakeGen2Operator(BaseOperator):
         oracle_hook = PeteOracleHook(oracle_conn_id=self.oracle_conn_id)
         # azure_data_lake_hook = WasbHook(wasb_conn_id=self.azure_data_lake_conn_id)
 
-        execution_date = datetime.strptime(context.get("ds"), '%Y-%m-%d')
-        execution_date_with_spanish_format = execution_date.strftime("%d/%m/%Y")
+        #execution_date = datetime.strptime(context.get("ds"), '%Y-%m-%d')
+        #execution_date_with_spanish_format = execution_date.strftime("%d/%m/%Y")
 
-        self.sql = self.sql.replace("[DATE_TO]", execution_date_with_spanish_format)
+        #self.sql = self.sql.replace("[DATE_TO]", execution_date_with_spanish_format)
 
-        print("CONSULTA " + self.sql)
+        #print("CONSULTA " + self.sql)
 
-        self.log.info("Dumping Oracle query results to local file")
+        # self.log.info("Dumping Oracle query results to local file")
 
         #connection = cx_Oracle.connect(user="ADMIN", password="aBc123-:,XyZ", dsn="test002db_high")
 
