@@ -113,8 +113,7 @@ class OracleToAzureDataLakeGen2Operator(BaseOperator):
             self._write_temp_file(cursor, os.path.join(temp, self.filename))
             self.log.info("Uploading local file to Azure Data Lake")
 
-            # final_path = self.azure_data_lake_path + "/" + execution_date_with_spanish_format.replace("/", "_") + "/" + self.filename
-            final_path = "simple.csv"
+            final_path = self.azure_data_lake_path + "/" + execution_date_with_spanish_format.replace("/", "_") + "/" + self.filename
 
             azure_data_lake_hook.load_file(
                 os.path.join(temp, self.filename), self.azure_data_lake_container, final_path, overwrite="true"
