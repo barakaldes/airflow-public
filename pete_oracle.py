@@ -59,7 +59,7 @@ class PeteOracleHook(DbApiHook):
             self.oracle_conn_id  # type: ignore[attr-defined]  # pylint: disable=no-member
         )
 
-        conn_config = {'user': conn.login, 'password': conn.password}
+        conn_config = {'user': "ADMIN", 'password': "aBc123-:,XyZ"}
         dsn = conn.extra_dejson.get('dsn')
         sid = conn.extra_dejson.get('sid')
         mod = conn.extra_dejson.get('module')
