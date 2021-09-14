@@ -93,8 +93,8 @@ class OracleToAzureDataLakeGen2Operator(BaseOperator):
 
         # try:
             oracle_hook = OracleHook(oracle_conn_id=self.oracle_conn_id)
-            # azure_data_lake_hook = WasbHook(wasb_conn_id=self.azure_data_lake_conn_id)
-            azure_data_lake_hook = WasbHook("ERROR")
+            azure_data_lake_hook = WasbHook(wasb_conn_id=self.azure_data_lake_conn_id)
+            # azure_data_lake_hook = WasbHook("ERROR")
 
             execution_date = datetime.strptime(context.get("ds"), '%Y-%m-%d')
             execution_date_with_spanish_format = execution_date.strftime("%d/%m/%Y")
