@@ -2,16 +2,12 @@ import os
 from datetime import datetime
 from tempfile import TemporaryDirectory
 from typing import Any, Optional, Union
-
-import cx_Oracle
 import unicodecsv as csv
 
 from airflow.models import BaseOperator
 from airflow.providers.microsoft.azure.hooks.wasb import WasbHook
 from airflow.providers.oracle.hooks.oracle import OracleHook
 from airflow.utils.decorators import apply_defaults
-
-from pete_oracle import PeteOracleHook
 
 
 class OracleToAzureDataLakeGen2Operator(BaseOperator):
