@@ -7,7 +7,8 @@ from airflow.operators.dummy import DummyOperator
 from datetime import datetime
 from airflow.models import Variable
 from airflow.operators.email import EmailOperator
-from autonomous-oracle-to-azure-datalake-operator import AutonomousOracleToAzureDataLakeOperator
+
+from operators.autonomous_oracle_to_azure_dataLake_operator import AutonomousOracleToAzureDataLakeOperator
 
 #######################################################################################
 # PARAMETROS
