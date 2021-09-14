@@ -120,8 +120,12 @@ class OracleToAzureDataLakeGen2Operator(BaseOperator):
             cursor.close()
             conn.close()  # type: ignore[attr-defined]
 
-        except Exception as ex:
+        except AirflowException as ex:
+            self.log.error('Pod Launching failed: {error}'.format(error=ex))
             raise AirflowException('Pod Launching failed: {error}'.format(error=ex))
+        except Exception as ex:
+            self.log.error(__class__ + ' failed: {error}'.format(error=ex))
+            raise Exception(__class__ + ' failed: {error}'.format(error=ex))
 
 
 
