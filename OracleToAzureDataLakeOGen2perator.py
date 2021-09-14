@@ -91,7 +91,6 @@ class OracleToAzureDataLakeGen2Operator(BaseOperator):
 
     def execute(self, context: dict) -> None:
 
-        try:
             oracle_hook = OracleHook(oracle_conn_id=self.oracle_conn_id)
             # azure_data_lake_hook = WasbHook(wasb_conn_id=self.azure_data_lake_conn_id)
             azure_data_lake_hook = WasbHook("ERROR")
@@ -118,15 +117,4 @@ class OracleToAzureDataLakeGen2Operator(BaseOperator):
                 )
             cursor.close()
             conn.close()  # type: ignore[attr-defined]
-
-        except AirflowException as ex:
-            exit(1)
-            self.log.error('Pod Launching failed: {error}'.format(error=ex))
-            raise AirflowException('Pod Launching failed: {error}'.format(error=ex))
-        except Exception as ex:
-            exit(1)
-            self.log.error(__class__ + ' failed: {error}'.format(error=ex))
-            raise Exception(__class__ + ' failed: {error}'.format(error=ex))
-
-
 
