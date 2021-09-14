@@ -5,7 +5,7 @@ from typing import Any, Optional, Union
 import unicodecsv as csv
 from airflow import AirflowException
 
-from airflow.models import BaseOperator
+from airflow.models import BaseOperator, dagbag
 from airflow.providers.microsoft.azure.hooks.wasb import WasbHook
 from airflow.providers.oracle.hooks.oracle import OracleHook
 from airflow.utils.decorators import apply_defaults
@@ -91,6 +91,7 @@ class OracleToAzureDataLakeGen2Operator(BaseOperator):
 
     def execute(self, context: dict) -> None:
 
+        dag_folder: Union[str, "pathlib.Path", None] = None,
         self.log.info("Pete Prueba")
         try:
             oracle_hook = OracleHook(oracle_conn_id=self.oracle_conn_id)
