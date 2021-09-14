@@ -91,6 +91,7 @@ class OracleToAzureDataLakeGen2Operator(BaseOperator):
 
     def execute(self, context: dict) -> None:
 
+        self.log.info("Pete Prueba")
         try:
             oracle_hook = OracleHook(oracle_conn_id=self.oracle_conn_id)
             # azure_data_lake_hook = WasbHook(wasb_conn_id=self.azure_data_lake_conn_id)
