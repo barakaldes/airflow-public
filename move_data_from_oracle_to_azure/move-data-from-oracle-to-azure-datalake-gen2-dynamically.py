@@ -8,7 +8,7 @@ from datetime import datetime
 from airflow.models import Variable
 from airflow.operators.email import EmailOperator
 
-from operators.autonomous_oracle_to_azure_dataLake_operator import AutonomousOracleToAzureDataLakeOperator
+from operators.autonomous_oracle_to_azure_datalake.autonomous_oracle_to_azure_dataLake_operator import AutonomousOracleToAzureDataLakeOperator
 
 #######################################################################################
 # PARAMETROS
@@ -74,7 +74,7 @@ def create_dag(dag_id,
     return dag
 
 
-config_filepath = 'dags/repo/move-data-from-oracle-to-azure/dag-config/'
+config_filepath = 'dags/repo/move_data_from_oracle_to_azure/dag_config/'
 
 for filename in os.listdir(config_filepath):
     f = open(config_filepath + filename)
