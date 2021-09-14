@@ -91,8 +91,6 @@ class OracleToAzureDataLakeGen2Operator(BaseOperator):
 
     def execute(self, context: dict) -> None:
 
-        dag_folder: Union[str, "pathlib.Path", None] = None,
-        self.log.info("Pete Prueba")
         try:
             oracle_hook = OracleHook(oracle_conn_id=self.oracle_conn_id)
             # azure_data_lake_hook = WasbHook(wasb_conn_id=self.azure_data_lake_conn_id)
@@ -104,7 +102,6 @@ class OracleToAzureDataLakeGen2Operator(BaseOperator):
             self.sql = self.sql.replace("[DATE_TO]", execution_date_with_spanish_format)
             print("CONSULTA " + self.sql)
 
-            self.log.info("Dumping Oracle query results to local file")
             conn = oracle_hook.get_conn()
 
             cursor = conn.cursor()  # type: ignore[attr-defined]
@@ -123,9 +120,11 @@ class OracleToAzureDataLakeGen2Operator(BaseOperator):
             conn.close()  # type: ignore[attr-defined]
 
         except AirflowException as ex:
+            exit(1)
             self.log.error('Pod Launching failed: {error}'.format(error=ex))
             raise AirflowException('Pod Launching failed: {error}'.format(error=ex))
         except Exception as ex:
+            exit(1)
             self.log.error(__class__ + ' failed: {error}'.format(error=ex))
             raise Exception(__class__ + ' failed: {error}'.format(error=ex))
 
