@@ -7,7 +7,7 @@ from airflow.operators.dummy import DummyOperator
 from datetime import datetime
 from airflow.models import Variable
 from airflow.operators.email import EmailOperator
-from plugins.OracleToAzureDataLakeOGen2perator import OracleToAzureDataLakeGen2Operator
+from autonomous-oracle-to-azure-datalake-operator import AutonomousOracleToAzureDataLakeOperator
 
 #######################################################################################
 # PARAMETROS
@@ -53,7 +53,7 @@ def create_dag(dag_id,
             html_content=html_email_content
         )
 
-        t_move_data_from_oracle_to_azure_datalake = OracleToAzureDataLakeGen2Operator(
+        t_move_data_from_oracle_to_azure_datalake = AutonomousOracleToAzureDataLakeOperator(
             task_id="move_data",
             azure_data_lake_conn_id="ORACLE-TO-AZURE-DATALAKE__DATALAKE_CONNECTION",
             azure_data_lake_container=Variable.get("oracle-to-azure-datalake__azure-data-lake-container"),
