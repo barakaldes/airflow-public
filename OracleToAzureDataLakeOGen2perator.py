@@ -3,6 +3,7 @@ from datetime import datetime
 from tempfile import TemporaryDirectory
 from typing import Any, Optional, Union
 import unicodecsv as csv
+from airflow import AirflowException
 
 from airflow.models import BaseOperator
 from airflow.providers.microsoft.azure.hooks.wasb import WasbHook
@@ -89,30 +90,38 @@ class OracleToAzureDataLakeGen2Operator(BaseOperator):
             csvfile.flush()
 
     def execute(self, context: dict) -> None:
-        oracle_hook = OracleHook(oracle_conn_id=self.oracle_conn_id)
-        # azure_data_lake_hook = WasbHook(wasb_conn_id=self.azure_data_lake_conn_id)
-        azure_data_lake_hook = WasbHook("ERROR")
 
-        execution_date = datetime.strptime(context.get("ds"), '%Y-%m-%d')
-        execution_date_with_spanish_format = execution_date.strftime("%d/%m/%Y")
+        try:
+            oracle_hook = OracleHook(oracle_conn_id=self.oracle_conn_id)
+            # azure_data_lake_hook = WasbHook(wasb_conn_id=self.azure_data_lake_conn_id)
+            azure_data_lake_hook = WasbHook("ERROR")
 
-        self.sql = self.sql.replace("[DATE_TO]", execution_date_with_spanish_format)
-        print("CONSULTA " + self.sql)
+            execution_date = datetime.strptime(context.get("ds"), '%Y-%m-%d')
+            execution_date_with_spanish_format = execution_date.strftime("%d/%m/%Y")
 
-        self.log.info("Dumping Oracle query results to local file")
-        conn = oracle_hook.get_conn()
+            self.sql = self.sql.replace("[DATE_TO]", execution_date_with_spanish_format)
+            print("CONSULTA " + self.sql)
 
-        cursor = conn.cursor()  # type: ignore[attr-defined]
-        cursor.execute(self.sql, self.sql_params)
+            self.log.info("Dumping Oracle query results to local file")
+            conn = oracle_hook.get_conn()
 
-        with TemporaryDirectory(prefix='airflow_oracle_to_azure_op_') as temp:
-            self._write_temp_file(cursor, os.path.join(temp, self.filename))
-            self.log.info("Uploading local file to Azure Data Lake")
+            cursor = conn.cursor()  # type: ignore[attr-defined]
+            cursor.execute(self.sql, self.sql_params)
 
-            final_path = self.azure_data_lake_path + "/" + execution_date_with_spanish_format.replace("/", "_") + "/" + self.filename
+            with TemporaryDirectory(prefix='airflow_oracle_to_azure_op_') as temp:
+                self._write_temp_file(cursor, os.path.join(temp, self.filename))
+                self.log.info("Uploading local file to Azure Data Lake")
 
-            azure_data_lake_hook.load_file(
-                os.path.join(temp, self.filename), self.azure_data_lake_container, final_path, overwrite="true"
-            )
-        cursor.close()
-        conn.close()  # type: ignore[attr-defined]
+                final_path = self.azure_data_lake_path + "/" + execution_date_with_spanish_format.replace("/", "_") + "/" + self.filename
+
+                azure_data_lake_hook.load_file(
+                    os.path.join(temp, self.filename), self.azure_data_lake_container, final_path, overwrite="true"
+                )
+            cursor.close()
+            conn.close()  # type: ignore[attr-defined]
+
+        except AirflowException as ex:
+            raise AirflowException('Pod Launching failed: {error}'.format(error=ex))
+
+
+
