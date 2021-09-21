@@ -2,5 +2,5 @@
     "DagId": "Oracle_To_Azure_Data_Lake__Espana",
     "Schedule": "*/20 * * * * ",
     "Query":"SELECT * FROM table1",
-    "Description": "Los datos de España son movidos desde Oracle Cloud al DataLake de Azure"
+    "Description": "Los datos de Espana son movidos desde Oracle Cloud al DataLake de Azure"
 }
