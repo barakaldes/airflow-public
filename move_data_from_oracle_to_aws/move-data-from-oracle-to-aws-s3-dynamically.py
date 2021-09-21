@@ -41,7 +41,8 @@ def create_dag(dag_id,
                args):
     dag = DAG(dag_id,
               schedule_interval=schedule,
-              default_args=args)
+              default_args=args,
+              description="Esto es una prueba")
 
     with dag:
         t_begin = DummyOperator(task_id="begin")
