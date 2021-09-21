@@ -1,5 +1,5 @@
 {
-    "DagId": "Oracle_To_S3_España",
+    "DagId": "Oracle_To_S3__España",
     "Schedule": "@daily",
     "Query":"SELECT * FROM table1"
 }
