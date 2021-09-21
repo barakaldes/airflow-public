@@ -1,5 +1,5 @@
 {
-    "DagId": "Oracle To Azure Data Lake__Afganistan",
+    "DagId": "Oracle To Azure Data Lake Afganistan",
     "Schedule": "@daily",
     "Query":"SELECT * FROM table1"
 }
