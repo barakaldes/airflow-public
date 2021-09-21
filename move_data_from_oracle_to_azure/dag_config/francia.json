@@ -1,5 +1,5 @@
 {
-    "DagId": "francia",
+    "DagId": "Oracle To Azure Data Lake :: Francia",
     "Schedule": "*/20 * * * * ",
     "Query":"SELECT * FROM table1"
 }
