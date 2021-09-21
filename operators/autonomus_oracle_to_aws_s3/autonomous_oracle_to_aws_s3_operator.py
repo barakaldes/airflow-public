@@ -93,7 +93,7 @@ class AutonomousOracleToAwsS3Operator(BaseOperator):
     def execute(self, context: dict) -> None:
         # try:
         oracle_hook = OracleHook(oracle_conn_id=self.oracle_conn_id)
-        s3 = S3Hook(aws_conn_id="PENE")
+        s3 = S3Hook(aws_conn_id="airflow")
 
         # aws_configs = Variable.get("aws_configs", deserialize_json=True)
         # s3_bucket = aws_configs.get("s3_bucket")
