@@ -87,7 +87,7 @@ for filename in os.listdir(config_filepath):
         'owner': owner,  # Propietario de la tarea
         'depends_on_past': False,  # Las tareas no dependen de tareas pasadas
         'email': email,
-        'start_date': datetime(2021, 9, 16),
+        'start_date': datetime(2021, 9, 21),
         'email_on_failure': True,
         'email_on_retry': True,
         'retries': 0,  # Numero de veces a reintentar la tarea
