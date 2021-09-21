@@ -1,5 +1,6 @@
 {
     "DagId": "Oracle_To_S3__España",
     "Schedule": "@daily",
-    "Query":"SELECT * FROM table1"
+    "Query":"SELECT * FROM table1",
+    "Description": "Los datos de España son movidos desde Oracle Cloud al s3 de AWS"
 }

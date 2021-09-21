@@ -36,13 +36,14 @@ html_email_content = """
 
 
 def create_dag(dag_id,
+               description,
                schedule,
                query,
                args):
     dag = DAG(dag_id,
               schedule_interval=schedule,
               default_args=args,
-              description="Esto es una prueba")
+              description=description)
 
     with dag:
         t_begin = DummyOperator(task_id="begin")
@@ -97,6 +98,7 @@ for filename in os.listdir(config_filepath):
     }
 
     globals()[config['DagId']] = create_dag(config['DagId'],
+                                            config['Description'],
                                             config['Schedule'],
                                             config['Query'],
                                             default_args)
