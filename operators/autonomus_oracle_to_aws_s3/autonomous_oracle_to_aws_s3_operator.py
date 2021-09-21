@@ -108,7 +108,7 @@ class AutonomousOracleToAwsS3Operator(BaseOperator):
             self.log.info("Uploading local file to AWS s3")
 
             final_path = self.bucket_path + "/" + execution_date_with_spanish_format.replace("/", "_") + "/" + self.filename
-            s3.load_file(os.path.join(temp, self.filename), final_path, bucket_name=self.s3_bucket, replace=True)
+            s3.load_file(os.path.join(temp, self.filename), "final_path", bucket_name=self.s3_bucket, replace=True)
 
         cursor.close()
         conn.close()  # type: ignore[attr-defined]
