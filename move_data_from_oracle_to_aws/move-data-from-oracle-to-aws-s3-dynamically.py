@@ -14,7 +14,7 @@ from operators.autonomus_oracle_to_aws_s3.autonomous_oracle_to_aws_s3_operator i
 #######################################################################################
 # PARAMETROS
 #######################################################################################
-nameDAG = 'mapfre-from-oracle-to-azure-gen-2'
+nameDAG = 'mapfre-from-oracle-to-aws-s3-dynamically'
 owner = 'mapfre'
 email = ['miguel.peteiro@evolutio.com']
 #######################################################################################
@@ -55,13 +55,15 @@ def create_dag(dag_id,
             html_content=html_email_content
         )
 
-        t_move_data_from_oracle_to_azure_datalake = AutonomousOracleToAzureDataLakeOperator(
+        t_move_data_from_oracle_to_aws = AutonomousOracleToAwsS3Operator(
             task_id="move_data",
-            azure_data_lake_conn_id="ORACLE-TO-AZURE-DATALAKE__DATALAKE_CONNECTION",
-            azure_data_lake_container=Variable.get("oracle-to-azure-datalake__azure-data-lake-container"),
-            oracle_conn_id="ORACLE-TO-AZURE-DATALAKE__ORACLE_CONNECTION",
-            filename=Variable.get("oracle-to-azure-datalake__filename"),
-            azure_data_lake_path=Variable.get("oracle-to-azure-datalake__azure-data-lake-path"),
+
+            aws__id="ORACLE_TO_AWS__AWS_CONNECTION",
+            s3_bucket=Variable.get("ORACLE_TO_AWS__BUCKET"),
+            bucket_path=Variable.get("ORACLE_TO_AWS__BUCKET_PATH"),
+
+            oracle_conn_id="ORACLE_TO_AWS__ORACLE_CONNECTION",
+            filename=Variable.get("ORACLE_TO_AWS__FILENAME"),
             sql=query,
             sql_params=None,
             delimiter=";",
@@ -70,12 +72,12 @@ def create_dag(dag_id,
             quoting=csv.QUOTE_MINIMAL
         )
 
-        t_begin >> t_move_data_from_oracle_to_azure_datalake >> t_send_email_OK >> t_end
+        t_begin >> t_move_data_from_oracle_to_aws >> t_send_email_OK >> t_end
 
     return dag
 
 
-config_filepath = 'dags/repo/move_data_from_oracle_to_azure/dag_config/'
+config_filepath = 'dags/repo/move_data_from_oracle_to_aws/dag_config/'
 
 for filename in os.listdir(config_filepath):
     f = open(config_filepath + filename)

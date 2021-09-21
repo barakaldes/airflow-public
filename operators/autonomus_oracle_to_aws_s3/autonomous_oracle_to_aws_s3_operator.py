@@ -46,9 +46,9 @@ class AutonomousOracleToAwsS3Operator(BaseOperator):
             *,
             filename: str,
 
-            azure_data_lake_conn_id: str,
-            azure_data_lake_container: str,
-            azure_data_lake_path: str,
+            aws__id: str,
+            s3_bucket: str,
+            bucket_path: str,
 
             oracle_conn_id: str,
             sql: str,
@@ -66,12 +66,9 @@ class AutonomousOracleToAwsS3Operator(BaseOperator):
         self.oracle_conn_id = oracle_conn_id
         self.sql = sql
         self.sql_params = sql_params
-
-
-        self.azure_data_lake_conn_id = azure_data_lake_conn_id
-        self.azure_data_lake_container = azure_data_lake_container
-        self.azure_data_lake_path = azure_data_lake_path
-
+        self.aws__id = aws__id
+        self.s3_bucket = s3_bucket
+        self.bucket_path = bucket_path
         self.delimiter = delimiter
         self.encoding = encoding
         self.quotechar = quotechar
@@ -93,14 +90,7 @@ class AutonomousOracleToAwsS3Operator(BaseOperator):
     def execute(self, context: dict) -> None:
         # try:
         oracle_hook = OracleHook(oracle_conn_id=self.oracle_conn_id)
-        s3 = S3Hook(aws_conn_id="airflow")
-
-        # aws_configs = Variable.get("aws_configs", deserialize_json=True)
-        # s3_bucket = aws_configs.get("s3_bucket")
-        # s3_key = aws_configs.get("s3_key_prefix") + "/" + CSV_FILE_PATH
-
-        s3_bucket = "pete-airflow"
-        s3_key = "peteiroMola.csv"
+        s3 = S3Hook(aws_conn_id=self.aws__id)
 
         execution_date = datetime.strptime(context.get("ds"), '%Y-%m-%d')
         execution_date_with_spanish_format = execution_date.strftime("%d/%m/%Y")
@@ -115,21 +105,10 @@ class AutonomousOracleToAwsS3Operator(BaseOperator):
 
         with TemporaryDirectory(prefix='airflow_oracle_to_azure_op_') as temp:
             self._write_temp_file(cursor, os.path.join(temp, self.filename))
-            self.log.info("Uploading local file to Azure Data Lake")
+            self.log.info("Uploading local file to AWS s3")
 
-            final_path = self.azure_data_lake_path + "/" + execution_date_with_spanish_format.replace("/", "_") + "/" + self.filename
+            final_path = self.bucket_path + "/" + execution_date_with_spanish_format.replace("/", "_") + "/" + self.filename
+            s3.load_file(os.path.join(temp, self.filename), final_path, bucket_name=self.s3_bucket, replace=True)
 
-            s3.load_file(os.path.join(temp, self.filename), s3_key, bucket_name=s3_bucket, replace=True)
-
-            # azure_data_lake_hook.load_file(
-            #     os.path.join(temp, self.filename), self.azure_data_lake_container, final_path, overwrite="true"
-            # )
         cursor.close()
         conn.close()  # type: ignore[attr-defined]
-
-    # except AirflowException as ex:
-    #     self.log.error('Pod Launching failed: {error}'.format(error=ex))
-    #     raise AirflowException('Pod Launching failed: {error}'.format(error=ex))
-    # except Exception as ex:
-    #     self.log.error(__class__ + ' failed: {error}'.format(error=ex))
-    #     raise Exception(__class__ + ' failed: {error}'.format(error=ex))
