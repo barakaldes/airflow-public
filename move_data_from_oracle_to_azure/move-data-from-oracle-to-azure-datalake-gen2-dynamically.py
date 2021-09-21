@@ -75,7 +75,8 @@ def create_dag(dag_id,
     return dag
 
 
-config_filepath = 'dags/repo/move_data_from_oracle_to_azure/dag_config/'
+package_dir = os.path.dirname(os.path.abspath(__file__))
+config_filepath = package_dir + "/" + 'dag_config/'
 
 for filename in os.listdir(config_filepath):
     f = open(config_filepath + filename)
