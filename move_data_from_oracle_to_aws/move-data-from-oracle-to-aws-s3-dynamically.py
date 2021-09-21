@@ -57,11 +57,9 @@ def create_dag(dag_id,
 
         t_move_data_from_oracle_to_aws = AutonomousOracleToAwsS3Operator(
             task_id="move_data",
-
             aws__id="ORACLE_TO_AWS__AWS_CONNECTION",
             s3_bucket=Variable.get("ORACLE_TO_AWS__BUCKET"),
             bucket_path=Variable.get("ORACLE_TO_AWS__BUCKET_PATH"),
-
             oracle_conn_id="ORACLE_TO_AWS__ORACLE_CONNECTION",
             filename=Variable.get("ORACLE_TO_AWS__FILENAME"),
             sql=query,
@@ -77,7 +75,7 @@ def create_dag(dag_id,
     return dag
 
 
-config_filepath = 'dags/repo/move_data_from_oracle_to_aws/dag_config/'
+config_filepath = 'move_data_from_oracle_to_aws/dag_config/'
 
 for filename in os.listdir(config_filepath):
     f = open(config_filepath + filename)
