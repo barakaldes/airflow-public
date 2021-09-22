@@ -58,7 +58,7 @@ def create_dag(dag_id,
         )
 
         t_move_data_from_oracle_to_aws = AutonomousOracleToAwsS3Operator(
-            task_id="move_data",
+            task_id="move_data_from_oracle_to_aws",
             aws__id="ORACLE_TO_AWS__AWS_CONNECTION",
             s3_bucket=Variable.get("ORACLE_TO_AWS__BUCKET"),
             bucket_path=Variable.get("ORACLE_TO_AWS__BUCKET_PATH"),
@@ -73,7 +73,7 @@ def create_dag(dag_id,
         )
 
         t_move_data_from_oracle_to_azure_datalake = AutonomousOracleToAzureDataLakeOperator(
-            task_id="move_data",
+            task_id="move_data_from_oracle_to_azure",
             azure_data_lake_conn_id="ORACLE-TO-AZURE-DATALAKE__DATALAKE_CONNECTION",
             azure_data_lake_container=Variable.get("oracle-to-azure-datalake__azure-data-lake-container"),
             oracle_conn_id="ORACLE-TO-AZURE-DATALAKE__ORACLE_CONNECTION",
