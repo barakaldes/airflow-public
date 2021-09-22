@@ -1,6 +1,0 @@
-{
-    "DagId": "Oracle_To_Azure_Data_Lake__Portugal",
-    "Schedule": "*/20 * * * * ",
-    "Query":"SELECT * FROM table1",
-    "Description": "Los datos de Portugal son movidos desde Oracle Cloud al DataLake de Azure"
-}

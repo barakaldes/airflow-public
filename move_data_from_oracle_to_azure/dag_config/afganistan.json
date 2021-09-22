@@ -1,6 +1,0 @@
-{
-    "DagId": "Oracle_To_Azure_Data_Lake__Afganistan",
-    "Schedule": "@daily",
-    "Query":"SELECT * FROM table1",
-    "Description": "Los datos de Afganistan son movidos desde Oracle Cloud al DataLake de Azure"
-}
